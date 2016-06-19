@@ -11,39 +11,25 @@ import Foundation
 
 class TreeViewController: UIViewController {
 	
-	// MARK: Properties
+	// MARK: - Properties
 	
 	@IBOutlet weak var fractalView: UIImageView!
 	@IBOutlet weak var iterationLabel: UILabel!
 	@IBOutlet weak var iterationStepper: UIStepper!
 	
-	@IBOutlet weak var angleSlider: UISlider!
-	@IBOutlet weak var angleLabel: UILabel!
-	
-	@IBOutlet weak var lengthSlider: UISlider!
-	@IBOutlet weak var lengthLabel: UILabel!
-	
-	@IBOutlet weak var addBranchesSwitch: UISwitch!
-	@IBOutlet weak var killBranchesSwith: UISwitch!
-	
 	let fLayer = CAShapeLayer()
 	var fPath = UIBezierPath()
 	
-	var angleVar: Double = 0.0
-	var lengthVar: Double = 0.0
+	var treeParams = TreeParams()
+	var tree = []
 	
 	var globalIterations = 0
 	
-	// MARK: ViewController
+	// MARK: - ViewController
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		//print("viewDidLoad", fractalView.frame)
-		
-		angleVar = Double(angleSlider.value)
-		angleLabel.text = String(angleVar)
-		lengthVar = Double(lengthSlider.value)
-		lengthLabel.text = String(lengthVar)
 	}
 	
 	override func viewWillAppear(animated: Bool) {
@@ -67,17 +53,7 @@ class TreeViewController: UIViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
-	// MARK: Actions
-	
-	@IBAction func sliderChanged(sender: UISlider) {
-		if sender === angleSlider {
-			angleVar = Double(sender.value)
-			angleLabel.text = String(angleVar)
-		} else if sender === lengthSlider {
-			lengthVar = Double(sender.value)
-			lengthLabel.text = String(lengthVar)
-		}
-	}
+	// MARK: - Actions
 	
 	@IBAction func stepperValueChanged(sender: UIStepper) {
 		drawFractal(iterations: Int(sender.value))
@@ -89,7 +65,7 @@ class TreeViewController: UIViewController {
 		globalIterations = Int(iterationStepper.value)
 	}
 	
-	// MARK: Fractal drawing
+	// MARK: - Fractal drawing
 	
 	func drawFractal(iterations n: Int) {
 		fractalView.layer.sublayers = nil
@@ -111,28 +87,18 @@ class TreeViewController: UIViewController {
 		
 		if n == 0  {
 			return
-		} else if (n <= globalIterations-globalIterations/5) && (killBranchRand == 10 && killBranchesSwith.on) {
+		} else if (n <= globalIterations-globalIterations/5) && (killBranchRand == 10 && treeParams.killBranch) {
 			return
 		} else {
-			let plusDeg = Double(arc4random_uniform(UInt32(angleVar))+15)
-			let midDeg = Double(arc4random_uniform(UInt32(angleVar)))
-			let minusDeg = Double(arc4random_uniform(UInt32(angleVar))+15)
+			let plusDeg = Double(arc4random_uniform(UInt32(treeParams.angleVar))+UInt32(treeParams.angleBase))
+			let minusDeg = Double(arc4random_uniform(UInt32(treeParams.angleVar))+UInt32(treeParams.angleBase))
 			
-			let branch3rand = arc4random_uniform(UInt32(3))
-			
-			if branch3rand > 1 && addBranchesSwitch.on {
-				appendFractalPath(iterations: n-1, start: end, end: iteration.1, degrees: plusDeg+20.0)
-				appendFractalPath(iterations: n-1, start: end, end: iteration.1, degrees: midDeg)
-				appendFractalPath(iterations: n-1, start: end, end: iteration.1, degrees: -minusDeg-20.0)
-			} else {
-				appendFractalPath(iterations: n-1, start: end, end: iteration.1, degrees: plusDeg)
-				appendFractalPath(iterations: n-1, start: end, end: iteration.1, degrees: -minusDeg)
-			}
+			appendFractalPath(iterations: n-1, start: end, end: iteration.1, degrees: plusDeg)
+			appendFractalPath(iterations: n-1, start: end, end: iteration.1, degrees: -minusDeg)
 		}
 	}
 	
-	// MARK: segment drawing
-	
+	// MARK: - Segment drawing
 	
 	func countIterationPath(start: CGPoint, end: CGPoint, degrees: Double) -> (UIBezierPath, CGPoint) {
 		let path = UIBezierPath()
@@ -146,7 +112,7 @@ class TreeViewController: UIViewController {
 		let newY = vector.0*sinDeg + vector.1*cosDeg
 		
 		//Losowy dzielnik dlugosci
-		let len = CGFloat(arc4random_uniform(UInt32(lengthVar))+12)/10.0
+		let len = CGFloat(arc4random_uniform(UInt32(treeParams.lengthDivVar*10))+UInt32(treeParams.lengthDivMin*10))/10.0
 		
 		//Nowy wektor
 		let endVector = (newX/len, newY/len)
@@ -159,4 +125,24 @@ class TreeViewController: UIViewController {
 		
 		return (path, newEnd)
 	}
+	
+	// MARK: - Navigation
+	
+	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+		if segue.identifier == "showTreeParameters" {
+			if let destination = segue.destinationViewController as? TreeParamsViewController {
+				destination.treeParams = treeParams
+			}
+		}
+	}
+	
+	@IBAction func cancelToTreeView(segue: UIStoryboardSegue) {
+	}
+	
+	@IBAction func doneToTreeView(segue: UIStoryboardSegue) {
+		if let source = segue.sourceViewController as? TreeParamsViewController {
+			treeParams = source.treeParams
+		}
+	}
+
 }
