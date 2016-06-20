@@ -57,10 +57,10 @@ class TreeParamsViewController: UIViewController {
 	@IBAction func sliderValueChanged(sender: UISlider) {
 		switch sender {
 		case lengthMinDivSlider:
-			lengthMinDivLabel.text = String(Int(round(sender.value*100))/100)
+			lengthMinDivLabel.text = String(round(sender.value*100)/100)
 			treeParams.lengthDivMin = sender.value
 		case lengthDivVarSlider:
-			lengthDivVarLabel.text = String(Int(round(sender.value*100))/100)
+			lengthDivVarLabel.text = String(round(sender.value*100)/100)
 			treeParams.lengthDivVar = sender.value
 		case angleMinSlider:
 			angleMinLabel.text = String(Int(sender.value))
