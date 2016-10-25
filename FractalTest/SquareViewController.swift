@@ -26,18 +26,18 @@ class SquareViewController: UIViewController {
 		//print("viewDidLoad", fractalView.frame)
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		//print("viewWillAppear", fractalView.frame)
 	}
 	
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		//print("viewDidAppear", fractalView.frame)
 		//At this point View frames are right size!
-		fractalView.layer.addSublayer(drawSquare(CGRect(origin: CGPointZero, size: fractalView.frame.size), color: UIColor.blackColor()))
+		fractalView.layer.addSublayer(drawSquare(CGRect(origin: CGPoint.zero, size: fractalView.frame.size), color: UIColor.black))
 		
-		fLayer.frame = CGRect(origin: CGPointZero, size: fractalView.frame.size)
-		fLayer.strokeColor = UIColor.blackColor().CGColor
-		fLayer.fillColor = UIColor.clearColor().CGColor
+		fLayer.frame = CGRect(origin: CGPoint.zero, size: fractalView.frame.size)
+		fLayer.strokeColor = UIColor.black.cgColor
+		fLayer.fillColor = UIColor.clear.cgColor
 		fLayer.lineWidth = 0.5
 		
 		drawFractal(iterations: Int(iterationStepper.value))
@@ -50,7 +50,7 @@ class SquareViewController: UIViewController {
 	
 	// MARK: Actions
 	
-	@IBAction func stepperValueChanged(sender: UIStepper) {
+	@IBAction func stepperValueChanged(_ sender: UIStepper) {
 		iterationLabel.text = String(Int(sender.value))
 		
 		drawFractal(iterations: Int(sender.value))
@@ -61,12 +61,12 @@ class SquareViewController: UIViewController {
 	func drawFractal(iterations n: Int) {
 		fPath = UIBezierPath()
 		fractalView.layer.sublayers = nil
-		fractalView.layer.addSublayer(drawSquare(CGRect(origin: CGPointZero, size: fractalView.frame.size), color: UIColor.blackColor()))
+		fractalView.layer.addSublayer(drawSquare(CGRect(origin: CGPoint.zero, size: fractalView.frame.size), color: UIColor.black))
 		
 		drawFractalIteration(iterations: Int(iterationStepper.value),
-		                     rect: CGRect(origin: CGPointZero, size: fractalView.frame.size))
+		                     rect: CGRect(origin: CGPoint.zero, size: fractalView.frame.size))
 		
-		fLayer.path = fPath.CGPath
+		fLayer.path = fPath.cgPath
 		fractalView.layer.addSublayer(fLayer)
 	}
 
@@ -74,7 +74,7 @@ class SquareViewController: UIViewController {
 		if n == 0 {
 			return
 		} else {
-			fPath.appendPath(drawIteration(rect))
+			fPath.append(drawIteration(rect))
 			
 			let size = CGSize(width: rect.size.width/3, height: rect.size.height/3)
 			let f1Rect = CGRect(origin: CGPoint(x: rect.origin.x,
@@ -116,24 +116,24 @@ class SquareViewController: UIViewController {
 		}
 	}
 	
-	func drawIteration(rect: CGRect) -> UIBezierPath {
+	func drawIteration(_ rect: CGRect) -> UIBezierPath {
 		let path = UIBezierPath()
 		
-		path.moveToPoint(CGPoint(x: rect.origin.x+rect.width/3,
+		path.move(to: CGPoint(x: rect.origin.x+rect.width/3,
 								 y: rect.origin.y))
-		path.addLineToPoint(CGPoint(x: rect.origin.x+rect.width/3,
+		path.addLine(to: CGPoint(x: rect.origin.x+rect.width/3,
 									y: rect.origin.y+rect.height))
-		path.moveToPoint(CGPoint(x: rect.origin.x+rect.width*2/3,
+		path.move(to: CGPoint(x: rect.origin.x+rect.width*2/3,
 								 y: rect.origin.y))
-		path.addLineToPoint(CGPoint(x: rect.origin.x+rect.width*2/3,
+		path.addLine(to: CGPoint(x: rect.origin.x+rect.width*2/3,
 									y: rect.origin.y+rect.height))
-		path.moveToPoint(CGPoint(x: rect.origin.x,
+		path.move(to: CGPoint(x: rect.origin.x,
 								 y: rect.origin.y+rect.height/3))
-		path.addLineToPoint(CGPoint(x: rect.origin.x+rect.width,
+		path.addLine(to: CGPoint(x: rect.origin.x+rect.width,
 									y: rect.origin.y+rect.height/3))
-		path.moveToPoint(CGPoint(x: rect.origin.x,
+		path.move(to: CGPoint(x: rect.origin.x,
 								 y: rect.origin.y+rect.height*2/3))
-		path.addLineToPoint(CGPoint(x: rect.origin.x+rect.width,
+		path.addLine(to: CGPoint(x: rect.origin.x+rect.width,
 									y: rect.origin.y+rect.height*2/3))
 		
 		return path
@@ -141,12 +141,12 @@ class SquareViewController: UIViewController {
 	
 	// MARK: Draw square
 	
-	func drawSquare(rect: CGRect, color: UIColor) -> CALayer {
+	func drawSquare(_ rect: CGRect, color: UIColor) -> CALayer {
 		let layer = CALayer()
 		
 		layer.frame = rect
 		layer.borderWidth = 0.5
-		layer.borderColor = color.CGColor
+		layer.borderColor = color.cgColor
 		
 		return layer
 	}

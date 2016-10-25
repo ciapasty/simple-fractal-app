@@ -27,17 +27,17 @@ class DragonViewController: UIViewController {
 		//print("viewDidLoad", fractalView.frame)
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		//print("viewWillAppear", fractalView.frame)
 	}
 	
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		//print("viewDidAppear", fractalView.frame)
 		//At this point View frames are right size!
 		
-		fLayer.frame = CGRect(origin: CGPointZero, size: fractalView.frame.size)
-		fLayer.strokeColor = UIColor.blackColor().CGColor
-		fLayer.fillColor = UIColor.clearColor().CGColor
+		fLayer.frame = CGRect(origin: CGPoint.zero, size: fractalView.frame.size)
+		fLayer.strokeColor = UIColor.black.cgColor
+		fLayer.fillColor = UIColor.clear.cgColor
 		fLayer.lineWidth = 0.5
 		
 		drawFractal(iterations: Int(iterationStepper.value))
@@ -50,7 +50,7 @@ class DragonViewController: UIViewController {
 	
 	// MARK: Actions
 	
-	@IBAction func stepperValueChanged(sender: UIStepper) {
+	@IBAction func stepperValueChanged(_ sender: UIStepper) {
 		drawFractal(iterations: Int(sender.value))
 		iterationLabel.text = String(Int(sender.value))
 	}
@@ -64,7 +64,7 @@ class DragonViewController: UIViewController {
 		            start: CGPoint(x: fractalView.frame.width/5, y: fractalView.frame.height/2),
 		            end: CGPoint(x: fractalView.frame.width*4/5, y: fractalView.frame.height/2))
 		
-		fLayer.path = fPath.CGPath
+		fLayer.path = fPath.cgPath
 		fractalView.layer.addSublayer(fLayer)
 	}
 	
@@ -73,7 +73,7 @@ class DragonViewController: UIViewController {
 		let iteration:(UIBezierPath, CGPoint) = countIterationPath(start, end: end)
 		
 		if n == 0 {
-			fPath.appendPath(iteration.0)
+			fPath.append(iteration.0)
 			return
 		} else {
 			appendFractalPath(iterations: n-1, start: start, end: iteration.1)
@@ -83,7 +83,7 @@ class DragonViewController: UIViewController {
 	
 	// MARK: segment drawing
 	
-	func countIterationPath(start: CGPoint, end: CGPoint) -> (UIBezierPath, CGPoint) {
+	func countIterationPath(_ start: CGPoint, end: CGPoint) -> (UIBezierPath, CGPoint) {
 		let path = UIBezierPath()
 		let vector = (end.x-start.x, end.y-start.y)
 		
@@ -104,11 +104,11 @@ class DragonViewController: UIViewController {
 		//Nowy punkt
 		let middle = CGPoint(x: start.x+midVector.0, y: start.y+midVector.1)
 		
-		path.moveToPoint(start)
+		path.move(to: start)
 		
-		path.addLineToPoint(middle)
+		path.addLine(to: middle)
 		
-		path.addLineToPoint(end)
+		path.addLine(to: end)
 
 		return (path, middle)
 	}

@@ -27,18 +27,18 @@ class TriangleViewController: UIViewController {
 		//print("viewDidLoad", fractalView.frame)
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		//print("viewWillAppear", fractalView.frame)
 	}
 	
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		//print("viewDidAppear", fractalView.frame)
 		//At this point View frames are right size!
-		fractalView.layer.addSublayer(drawTriangle(CGRect(origin: CGPointZero, size: fractalView.frame.size), color: UIColor.blackColor()))
+		fractalView.layer.addSublayer(drawTriangle(CGRect(origin: CGPoint.zero, size: fractalView.frame.size), color: UIColor.black))
 		
-		fLayer.frame = CGRect(origin: CGPointZero, size: fractalView.frame.size)
-		fLayer.strokeColor = UIColor.blackColor().CGColor
-		fLayer.fillColor = UIColor.clearColor().CGColor
+		fLayer.frame = CGRect(origin: CGPoint.zero, size: fractalView.frame.size)
+		fLayer.strokeColor = UIColor.black.cgColor
+		fLayer.fillColor = UIColor.clear.cgColor
 		fLayer.lineWidth = 0.5
 		
 		drawFractal(iterations: Int(iterationStepper.value))
@@ -51,7 +51,7 @@ class TriangleViewController: UIViewController {
 	
 	// MARK: Actions
 	
-	@IBAction func stepperValueChanged(sender: UIStepper) {
+	@IBAction func stepperValueChanged(_ sender: UIStepper) {
 		iterationLabel.text = String(Int(sender.value))
 		
 		drawFractal(iterations: Int(sender.value))
@@ -62,14 +62,14 @@ class TriangleViewController: UIViewController {
 	func drawFractal(iterations n: Int) {
 		fPath = UIBezierPath()
 		fractalView.layer.sublayers = nil
-		fractalView.layer.addSublayer(drawTriangle(CGRect(origin: CGPointZero, size: fractalView.frame.size), color: UIColor.blackColor()))
+		fractalView.layer.addSublayer(drawTriangle(CGRect(origin: CGPoint.zero, size: fractalView.frame.size), color: UIColor.black))
 		
 		drawFractalIteration(iterations: n,
-		                     rect: CGRect(origin: CGPointZero,
+		                     rect: CGRect(origin: CGPoint.zero,
 							 size: CGSize(width: fractalView.frame.width,
 										  height: triangleHeight(fractalView.frame.width))))
 		
-		fLayer.path = fPath.CGPath
+		fLayer.path = fPath.cgPath
 		fractalView.layer.addSublayer(fLayer)
 	}
 	
@@ -77,7 +77,7 @@ class TriangleViewController: UIViewController {
 		if n == 0 {
 			return
 		} else {
-			fPath.appendPath(drawIteration(rect))
+			fPath.append(drawIteration(rect))
 		
 			let size = CGSize(width: rect.size.width/2, height: triangleHeight(rect.size.width/2))
 			let f1Rect = CGRect(origin: CGPoint(x: rect.origin.x,
@@ -98,16 +98,16 @@ class TriangleViewController: UIViewController {
 		}
 	}
 	
-	func drawIteration(rect: CGRect) -> UIBezierPath {
+	func drawIteration(_ rect: CGRect) -> UIBezierPath {
 		let path = UIBezierPath()
 		
-		path.moveToPoint(CGPoint(x: rect.origin.x+rect.width/2,
+		path.move(to: CGPoint(x: rect.origin.x+rect.width/2,
 								 y: rect.origin.y))
-		path.addLineToPoint(CGPoint(x: rect.origin.x+rect.width*3/4,
+		path.addLine(to: CGPoint(x: rect.origin.x+rect.width*3/4,
 									y: rect.origin.y+triangleHeight(rect.width/2)))
-		path.addLineToPoint(CGPoint(x: rect.origin.x+rect.width*1/4,
+		path.addLine(to: CGPoint(x: rect.origin.x+rect.width*1/4,
 									y: rect.origin.y+triangleHeight(rect.width/2)))
-		path.addLineToPoint(CGPoint(x: rect.origin.x+rect.width/2,
+		path.addLine(to: CGPoint(x: rect.origin.x+rect.width/2,
 									y: rect.origin.y))
 		
 		return path
@@ -115,7 +115,7 @@ class TriangleViewController: UIViewController {
 	
 	// MARK: Triangle drawing
 	
-	func drawTriangle(rect: CGRect, color: UIColor) -> CALayer {
+	func drawTriangle(_ rect: CGRect, color: UIColor) -> CALayer {
 		let layer = CAShapeLayer()
 		let path = UIBezierPath()
 		let frame = CGRect(origin: rect.origin,
@@ -123,23 +123,23 @@ class TriangleViewController: UIViewController {
 										height: triangleHeight(rect.width)))
 		
 		layer.frame = frame
-		layer.strokeColor = color.CGColor
-		layer.fillColor = UIColor.clearColor().CGColor
+		layer.strokeColor = color.cgColor
+		layer.fillColor = UIColor.clear.cgColor
 		layer.lineWidth = 0.5
 		
-		path.moveToPoint(frame.origin)
-		path.addLineToPoint(CGPoint(x: frame.origin.x+frame.width,
+		path.move(to: frame.origin)
+		path.addLine(to: CGPoint(x: frame.origin.x+frame.width,
 									y: frame.origin.y))
-		path.addLineToPoint(CGPoint(x: frame.origin.x+frame.width/2,
+		path.addLine(to: CGPoint(x: frame.origin.x+frame.width/2,
 									y: frame.origin.y+frame.height))
-		path.addLineToPoint(frame.origin)
+		path.addLine(to: frame.origin)
 		
-		layer.path = path.CGPath
+		layer.path = path.cgPath
 		
 		return layer
 	}
 	
-	func triangleHeight(side: CGFloat) -> CGFloat {
+	func triangleHeight(_ side: CGFloat) -> CGFloat {
 		return (side*sqrt(3))/2
 	}
 }

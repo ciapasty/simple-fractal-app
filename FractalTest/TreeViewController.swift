@@ -21,8 +21,7 @@ class TreeViewController: UIViewController {
 	var fPath = UIBezierPath()
 	
 	var treeParams = TreeParams()
-	var tree = []
-	
+    
 	var globalIterations = 0
 	
 	// MARK: - ViewController
@@ -32,17 +31,17 @@ class TreeViewController: UIViewController {
 		//print("viewDidLoad", fractalView.frame)
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		//print("viewWillAppear", fractalView.frame)
 	}
 	
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		//print("viewDidAppear", fractalView.frame)
 		//At this point View frames are right size!
 		
-		fLayer.frame = CGRect(origin: CGPointZero, size: fractalView.frame.size)
-		fLayer.strokeColor = UIColor.blackColor().CGColor
-		fLayer.fillColor = UIColor.clearColor().CGColor
+		fLayer.frame = CGRect(origin: CGPoint.zero, size: fractalView.frame.size)
+		fLayer.strokeColor = UIColor.black.cgColor
+		fLayer.fillColor = UIColor.clear.cgColor
 		fLayer.lineWidth = 0.5
 		
 		drawFractal(iterations: Int(iterationStepper.value))
@@ -55,12 +54,12 @@ class TreeViewController: UIViewController {
 	
 	// MARK: - Actions
 	
-	@IBAction func stepperValueChanged(sender: UIStepper) {
+	@IBAction func stepperValueChanged(_ sender: UIStepper) {
 		drawFractal(iterations: Int(sender.value))
 		iterationLabel.text = String(Int(sender.value))
 	}
 	
-	@IBAction func redrawFractal(sender: UITapGestureRecognizer) {
+	@IBAction func redrawFractal(_ sender: UITapGestureRecognizer) {
 		drawFractal(iterations: Int(iterationStepper.value))
 		globalIterations = Int(iterationStepper.value)
 	}
@@ -74,14 +73,14 @@ class TreeViewController: UIViewController {
 		                  start: CGPoint(x: fractalView.frame.width/2, y: fractalView.frame.height*3/2),
 		                  end: CGPoint(x: fractalView.frame.width/2, y: fractalView.frame.height),
 		                  degrees: 0.0)
-		fLayer.path = fPath.CGPath
+		fLayer.path = fPath.cgPath
 		fractalView.layer.addSublayer(fLayer)
 	}
 	
 	func appendFractalPath(iterations n: Int, start: CGPoint, end: CGPoint, degrees: Double) {
 		
 		let iteration:(UIBezierPath, CGPoint) = countIterationPath(start, end: end, degrees: degrees)
-		fPath.appendPath(iteration.0)
+		fPath.append(iteration.0)
 		
 		let killBranchRand = arc4random_uniform(UInt32(11))
 		
@@ -100,7 +99,7 @@ class TreeViewController: UIViewController {
 	
 	// MARK: - Segment drawing
 	
-	func countIterationPath(start: CGPoint, end: CGPoint, degrees: Double) -> (UIBezierPath, CGPoint) {
+	func countIterationPath(_ start: CGPoint, end: CGPoint, degrees: Double) -> (UIBezierPath, CGPoint) {
 		let path = UIBezierPath()
 		let vector = (end.x-start.x, end.y-start.y)
 		
@@ -120,27 +119,27 @@ class TreeViewController: UIViewController {
 		//Nowy punkt
 		let newEnd = CGPoint(x: end.x+endVector.0, y: end.y+endVector.1)
 		
-		path.moveToPoint(end)
-		path.addLineToPoint(newEnd)
+		path.move(to: end)
+		path.addLine(to: newEnd)
 		
 		return (path, newEnd)
 	}
 	
 	// MARK: - Navigation
 	
-	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "showTreeParameters" {
-			if let destination = segue.destinationViewController as? TreeParamsViewController {
+			if let destination = segue.destination as? TreeParamsViewController {
 				destination.treeParams = treeParams
 			}
 		}
 	}
 	
-	@IBAction func cancelToTreeView(segue: UIStoryboardSegue) {
+	@IBAction func cancelToTreeView(_ segue: UIStoryboardSegue) {
 	}
 	
-	@IBAction func doneToTreeView(segue: UIStoryboardSegue) {
-		if let source = segue.sourceViewController as? TreeParamsViewController {
+	@IBAction func doneToTreeView(_ segue: UIStoryboardSegue) {
+		if let source = segue.source as? TreeParamsViewController {
 			treeParams = source.treeParams
 		}
 	}

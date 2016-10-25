@@ -39,7 +39,7 @@ class TreeParamsViewController: UIViewController {
 		lengthDivVarSlider.value = treeParams.lengthDivVar
 		angleMinSlider.value = treeParams.angleBase
 		angleVarSlider.value = treeParams.angleVar
-		killBranchesSwitch.on = treeParams.killBranch
+		killBranchesSwitch.isOn = treeParams.killBranch
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,12 +49,12 @@ class TreeParamsViewController: UIViewController {
 	
 	// MARK: - Actions
 	
-	@IBAction func killBranchSwitch(sender: UISwitch) {
-		treeParams.killBranch = sender.on
+	@IBAction func killBranchSwitch(_ sender: UISwitch) {
+		treeParams.killBranch = sender.isOn
 	}
 	
 
-	@IBAction func sliderValueChanged(sender: UISlider) {
+	@IBAction func sliderValueChanged(_ sender: UISlider) {
 		switch sender {
 		case lengthMinDivSlider:
 			lengthMinDivLabel.text = String(round(sender.value*100)/100)
