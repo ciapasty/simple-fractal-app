@@ -13,7 +13,7 @@ class TriangleViewController: UIViewController {
 
 	// MARK: Properties
 	
-	@IBOutlet weak var fractalView: UIImageView!
+    @IBOutlet weak var fractalView: FractalView!
 	@IBOutlet weak var iterationLabel: UILabel!
 	@IBOutlet weak var iterationStepper: UIStepper!
 	
@@ -22,38 +22,15 @@ class TriangleViewController: UIViewController {
 
 	// MARK: ViewController
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		//print("viewDidLoad", fractalView.frame)
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		//print("viewWillAppear", fractalView.frame)
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		//print("viewDidAppear", fractalView.frame)
-		//At this point View frames are right size!
-		fractalView.layer.addSublayer(drawTriangle(CGRect(origin: CGPoint.zero, size: fractalView.frame.size), color: UIColor.black))
-		
-		fLayer.frame = CGRect(origin: CGPoint.zero, size: fractalView.frame.size)
-		fLayer.strokeColor = UIColor.black.cgColor
-		fLayer.fillColor = UIColor.clear.cgColor
-		fLayer.lineWidth = 0.5
-		
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 		drawFractal(iterations: Int(iterationStepper.value))
-	}
-	
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
+    }
 	
 	// MARK: Actions
 	
 	@IBAction func stepperValueChanged(_ sender: UIStepper) {
 		iterationLabel.text = String(Int(sender.value))
-		
 		drawFractal(iterations: Int(sender.value))
 	}
 	
@@ -61,23 +38,17 @@ class TriangleViewController: UIViewController {
 	
 	func drawFractal(iterations n: Int) {
 		fPath = UIBezierPath()
-		fractalView.layer.sublayers = nil
-		fractalView.layer.addSublayer(drawTriangle(CGRect(origin: CGPoint.zero, size: fractalView.frame.size), color: UIColor.black))
-		
-		drawFractalIteration(iterations: n,
-		                     rect: CGRect(origin: CGPoint.zero,
-							 size: CGSize(width: fractalView.frame.width,
-										  height: triangleHeight(fractalView.frame.width))))
-		
-		fLayer.path = fPath.cgPath
-		fractalView.layer.addSublayer(fLayer)
+		drawFractalIteration(iterations: n, rect: CGRect(origin: CGPoint.zero,
+		                                                 size: CGSize(width: fractalView.frame.width,
+		                                                              height: triangleHeight(fractalView.frame.width))))
+		fractalView.path = fPath
 	}
 	
 	func drawFractalIteration(iterations n: Int, rect: CGRect) {
-		if n == 0 {
+		if n < 0 {
 			return
 		} else {
-			fPath.append(drawIteration(rect))
+			fPath.append(countTrianglePath(rect))
 		
 			let size = CGSize(width: rect.size.width/2, height: triangleHeight(rect.size.width/2))
 			let f1Rect = CGRect(origin: CGPoint(x: rect.origin.x,
@@ -98,34 +69,11 @@ class TriangleViewController: UIViewController {
 		}
 	}
 	
-	func drawIteration(_ rect: CGRect) -> UIBezierPath {
-		let path = UIBezierPath()
-		
-		path.move(to: CGPoint(x: rect.origin.x+rect.width/2,
-								 y: rect.origin.y))
-		path.addLine(to: CGPoint(x: rect.origin.x+rect.width*3/4,
-									y: rect.origin.y+triangleHeight(rect.width/2)))
-		path.addLine(to: CGPoint(x: rect.origin.x+rect.width*1/4,
-									y: rect.origin.y+triangleHeight(rect.width/2)))
-		path.addLine(to: CGPoint(x: rect.origin.x+rect.width/2,
-									y: rect.origin.y))
-		
-		return path
-	}
-	
-	// MARK: Triangle drawing
-	
-	func drawTriangle(_ rect: CGRect, color: UIColor) -> CALayer {
-		let layer = CAShapeLayer()
+	func countTrianglePath(_ rect: CGRect) -> UIBezierPath {
 		let path = UIBezierPath()
 		let frame = CGRect(origin: rect.origin,
 		                   size: CGSize(width: rect.width,
 										height: triangleHeight(rect.width)))
-		
-		layer.frame = frame
-		layer.strokeColor = color.cgColor
-		layer.fillColor = UIColor.clear.cgColor
-		layer.lineWidth = 0.5
 		
 		path.move(to: frame.origin)
 		path.addLine(to: CGPoint(x: frame.origin.x+frame.width,
@@ -134,9 +82,7 @@ class TriangleViewController: UIViewController {
 									y: frame.origin.y+frame.height))
 		path.addLine(to: frame.origin)
 		
-		layer.path = path.cgPath
-		
-		return layer
+		return path
 	}
 	
 	func triangleHeight(_ side: CGFloat) -> CGFloat {

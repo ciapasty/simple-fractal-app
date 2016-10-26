@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6302F2721DBFE9EF005E6E61 /* FractalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6302F2711DBFE9EF005E6E61 /* FractalView.swift */; };
 		CE8BEA0A1D1562B000CB0AAD /* TreeParamsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8BEA091D1562B000CB0AAD /* TreeParamsViewController.swift */; };
 		CE8BEA0C1D1563B800CB0AAD /* TreeParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8BEA0B1D1563B800CB0AAD /* TreeParams.swift */; };
 		CE8D0F581CFCA0AB004F8920 /* DragonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8D0F571CFCA0AB004F8920 /* DragonViewController.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6302F2711DBFE9EF005E6E61 /* FractalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FractalView.swift; sourceTree = "<group>"; };
 		CE8BEA091D1562B000CB0AAD /* TreeParamsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeParamsViewController.swift; sourceTree = "<group>"; };
 		CE8BEA0B1D1563B800CB0AAD /* TreeParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeParams.swift; sourceTree = "<group>"; };
 		CE8D0F571CFCA0AB004F8920 /* DragonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragonViewController.swift; sourceTree = "<group>"; };
@@ -45,6 +47,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6302F26D1DBFE978005E6E61 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CEB931DE1CF963A400A19969 /* SquareViewController.swift */,
+				CEB931EE1CF97AF500A19969 /* TriangleViewController.swift */,
+				CE8D0F571CFCA0AB004F8920 /* DragonViewController.swift */,
+				CEF721971D03268E008A35DA /* TreeViewController.swift */,
+				CE8BEA091D1562B000CB0AAD /* TreeParamsViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		6302F26E1DBFE98E005E6E61 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6302F2711DBFE9EF005E6E61 /* FractalView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		6302F26F1DBFE99B005E6E61 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				CE8BEA0B1D1563B800CB0AAD /* TreeParams.swift */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		6302F2701DBFE9AA005E6E61 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				CEB931E01CF963A400A19969 /* Main.storyboard */,
+				CEB931E51CF963A400A19969 /* LaunchScreen.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
 		CEB931D01CF963A400A19969 = {
 			isa = PBXGroup;
 			children = (
@@ -65,15 +104,11 @@
 			isa = PBXGroup;
 			children = (
 				CEB931DC1CF963A400A19969 /* AppDelegate.swift */,
-				CEB931DE1CF963A400A19969 /* SquareViewController.swift */,
-				CEB931EE1CF97AF500A19969 /* TriangleViewController.swift */,
-				CE8D0F571CFCA0AB004F8920 /* DragonViewController.swift */,
-				CEF721971D03268E008A35DA /* TreeViewController.swift */,
-				CE8BEA091D1562B000CB0AAD /* TreeParamsViewController.swift */,
-				CE8BEA0B1D1563B800CB0AAD /* TreeParams.swift */,
-				CEB931E01CF963A400A19969 /* Main.storyboard */,
+				6302F26D1DBFE978005E6E61 /* ViewControllers */,
+				6302F26E1DBFE98E005E6E61 /* Views */,
+				6302F26F1DBFE99B005E6E61 /* Classes */,
+				6302F2701DBFE9AA005E6E61 /* Storyboards */,
 				CEB931E31CF963A400A19969 /* Assets.xcassets */,
-				CEB931E51CF963A400A19969 /* LaunchScreen.storyboard */,
 				CEB931E81CF963A400A19969 /* Info.plist */,
 			);
 			name = "simple-fractal-app";
@@ -157,6 +192,7 @@
 				CEB931DD1CF963A400A19969 /* AppDelegate.swift in Sources */,
 				CEF721981D03268E008A35DA /* TreeViewController.swift in Sources */,
 				CEB931EF1CF97AF500A19969 /* TriangleViewController.swift in Sources */,
+				6302F2721DBFE9EF005E6E61 /* FractalView.swift in Sources */,
 				CE8BEA0A1D1562B000CB0AAD /* TreeParamsViewController.swift in Sources */,
 				CE8D0F581CFCA0AB004F8920 /* DragonViewController.swift in Sources */,
 				CE8BEA0C1D1563B800CB0AAD /* TreeParams.swift in Sources */,

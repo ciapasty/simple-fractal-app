@@ -13,40 +13,18 @@ class DragonViewController: UIViewController {
 	
 	// MARK: Properties
 	
-	@IBOutlet weak var fractalView: UIImageView!
+    @IBOutlet weak var fractalView: FractalView!
 	@IBOutlet weak var iterationLabel: UILabel!
 	@IBOutlet weak var iterationStepper: UIStepper!
 	
-	let fLayer = CAShapeLayer()
 	var fPath = UIBezierPath()
 	
 	// MARK: ViewController
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		//print("viewDidLoad", fractalView.frame)
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		//print("viewWillAppear", fractalView.frame)
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		//print("viewDidAppear", fractalView.frame)
-		//At this point View frames are right size!
-		
-		fLayer.frame = CGRect(origin: CGPoint.zero, size: fractalView.frame.size)
-		fLayer.strokeColor = UIColor.black.cgColor
-		fLayer.fillColor = UIColor.clear.cgColor
-		fLayer.lineWidth = 0.5
-		
-		drawFractal(iterations: Int(iterationStepper.value))
-	}
-	
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        drawFractal(iterations: Int(iterationStepper.value))
+    }
 	
 	// MARK: Actions
 	
@@ -58,56 +36,53 @@ class DragonViewController: UIViewController {
 	// MARK: Fractal drawing
 	
 	func drawFractal(iterations n: Int) {
-		fractalView.layer.sublayers = nil
-		fPath = UIBezierPath()
+        fPath = UIBezierPath()
 		appendFractalPath(iterations: n,
 		            start: CGPoint(x: fractalView.frame.width/5, y: fractalView.frame.height/2),
 		            end: CGPoint(x: fractalView.frame.width*4/5, y: fractalView.frame.height/2))
-		
-		fLayer.path = fPath.cgPath
-		fractalView.layer.addSublayer(fLayer)
+        
+        // Acctual drawing
+		fractalView.path = fPath
 	}
 	
 	func appendFractalPath(iterations n: Int, start: CGPoint, end: CGPoint) {
 		
-		let iteration:(UIBezierPath, CGPoint) = countIterationPath(start, end: end)
+		let iteration = countIterationPath(start, end: end)
 		
 		if n == 0 {
-			fPath.append(iteration.0)
+			fPath.append(iteration.path)
 			return
 		} else {
-			appendFractalPath(iterations: n-1, start: start, end: iteration.1)
-			appendFractalPath(iterations: n-1, start: end, end: iteration.1)
+			appendFractalPath(iterations: n-1, start: start, end: iteration.middlePoint)
+			appendFractalPath(iterations: n-1, start: end, end: iteration.middlePoint)
 		}
 	}
 	
-	// MARK: segment drawing
+	// MARK: Segment counting
 	
-	func countIterationPath(_ start: CGPoint, end: CGPoint) -> (UIBezierPath, CGPoint) {
+    func countIterationPath(_ start: CGPoint, end: CGPoint) -> (path: UIBezierPath, middlePoint: CGPoint) {
 		let path = UIBezierPath()
 		let vector = (end.x-start.x, end.y-start.y)
 		
-		//Obrot wektora o 45 stopni
+		// 45 degrees vector rotation
 		let sin45 = CGFloat(sin(CDouble((M_PI/180.0)*45)))
 		let cos45 = CGFloat(cos(CDouble((M_PI/180.0)*45)))
 		
 		let newX = vector.0*cos45 - vector.1*sin45
 		let newY = vector.0*sin45 + vector.1*cos45
 		
-		//Wyliczenie dlugosci nowego wektora
+		// New vector length
 		let vectorLen = sqrt(vector.0*vector.0+vector.1*vector.1)
 		let midVectorLen = vectorLen/sqrt(2)
 		
-		//Nowy wektor
+		// Create new vector
 		let midVector = (newX*midVectorLen/vectorLen, newY*midVectorLen/vectorLen)
 		
-		//Nowy punkt
+		// Calculate middle point
 		let middle = CGPoint(x: start.x+midVector.0, y: start.y+midVector.1)
 		
 		path.move(to: start)
-		
 		path.addLine(to: middle)
-		
 		path.addLine(to: end)
 
 		return (path, middle)

@@ -13,11 +13,10 @@ class TreeViewController: UIViewController {
 	
 	// MARK: - Properties
 	
-	@IBOutlet weak var fractalView: UIImageView!
+	@IBOutlet weak var fractalView: FractalView!
 	@IBOutlet weak var iterationLabel: UILabel!
 	@IBOutlet weak var iterationStepper: UIStepper!
 	
-	let fLayer = CAShapeLayer()
 	var fPath = UIBezierPath()
 	
 	var treeParams = TreeParams()
@@ -26,30 +25,8 @@ class TreeViewController: UIViewController {
 	
 	// MARK: - ViewController
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		//print("viewDidLoad", fractalView.frame)
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		//print("viewWillAppear", fractalView.frame)
-	}
-	
 	override func viewDidAppear(_ animated: Bool) {
-		//print("viewDidAppear", fractalView.frame)
-		//At this point View frames are right size!
-		
-		fLayer.frame = CGRect(origin: CGPoint.zero, size: fractalView.frame.size)
-		fLayer.strokeColor = UIColor.black.cgColor
-		fLayer.fillColor = UIColor.clear.cgColor
-		fLayer.lineWidth = 0.5
-		
 		drawFractal(iterations: Int(iterationStepper.value))
-	}
-	
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
 	}
 	
 	// MARK: - Actions
@@ -67,14 +44,12 @@ class TreeViewController: UIViewController {
 	// MARK: - Fractal drawing
 	
 	func drawFractal(iterations n: Int) {
-		fractalView.layer.sublayers = nil
 		fPath = UIBezierPath()
 		appendFractalPath(iterations: n,
 		                  start: CGPoint(x: fractalView.frame.width/2, y: fractalView.frame.height*3/2),
 		                  end: CGPoint(x: fractalView.frame.width/2, y: fractalView.frame.height),
 		                  degrees: 0.0)
-		fLayer.path = fPath.cgPath
-		fractalView.layer.addSublayer(fLayer)
+		fractalView.path = fPath
 	}
 	
 	func appendFractalPath(iterations n: Int, start: CGPoint, end: CGPoint, degrees: Double) {
@@ -135,8 +110,7 @@ class TreeViewController: UIViewController {
 		}
 	}
 	
-	@IBAction func cancelToTreeView(_ segue: UIStoryboardSegue) {
-	}
+	@IBAction func cancelToTreeView(_ segue: UIStoryboardSegue) {}
 	
 	@IBAction func doneToTreeView(_ segue: UIStoryboardSegue) {
 		if let source = segue.source as? TreeParamsViewController {

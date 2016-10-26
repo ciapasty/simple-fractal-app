@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 
 public struct TreeParams {
-	var killBranch:Bool
-	var angleBase:Float
-	var angleVar:Float
-	var lengthDivMin:Float
-	var lengthDivVar:Float
+	var killBranch: Bool
+	var angleBase: Float
+	var angleVar: Float
+	var lengthDivMin: Float
+	var lengthDivVar: Float
 	
-	init(killBranch:Bool, angleBase:Float, angleVar:Float, lengthDivMin:Float, lengthDivVar:Float) {
+	init(killBranch: Bool, angleBase: Float, angleVar: Float, lengthDivMin: Float, lengthDivVar: Float) {
 		self.killBranch = killBranch
 		self.angleBase = angleBase
 		self.angleVar = angleVar

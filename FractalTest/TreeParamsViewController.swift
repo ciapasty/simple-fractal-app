@@ -41,13 +41,6 @@ class TreeParamsViewController: UIViewController {
 		angleVarSlider.value = treeParams.angleVar
 		killBranchesSwitch.isOn = treeParams.killBranch
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-	
-	// MARK: - Actions
 	
 	@IBAction func killBranchSwitch(_ sender: UISwitch) {
 		treeParams.killBranch = sender.isOn
